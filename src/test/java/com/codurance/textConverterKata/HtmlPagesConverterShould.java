@@ -7,7 +7,7 @@ import java.io.IOException;
 import org.junit.Test;
 
 
-public class HtmlPagesConverterTest {
+public class HtmlPagesConverterShould {
     @Test
     public void foo() throws IOException {
         HtmlPagesConverter converter = new HtmlPagesConverter("foo");

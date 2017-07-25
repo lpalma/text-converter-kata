@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class HtmlTextConverterTest {
+public class HtmlTextConverterShould {
     @Test
     public void foo() {
         HtmlTextConverter converter = new HtmlTextConverter("foo");
