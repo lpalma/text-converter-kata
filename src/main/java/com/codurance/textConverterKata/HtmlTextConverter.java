@@ -1,6 +1,7 @@
 package com.codurance.textConverterKata;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -15,7 +16,7 @@ public class HtmlTextConverter
 
     public String convertToHtml() throws IOException{
     
-	    BufferedReader reader = new BufferedReader(new FileReader(fullFilenameWithPath));
+	    BufferedReader reader = getBufferedReader();
 	    
 	    String line = reader.readLine();
 	    String html = "";
@@ -28,6 +29,10 @@ public class HtmlTextConverter
 	    return html;
 
     }
+
+	protected BufferedReader getBufferedReader() throws FileNotFoundException {
+		return new BufferedReader(new FileReader(fullFilenameWithPath));
+	}
 
 	public String getFilename() {
 		return this.fullFilenameWithPath;
