@@ -9,6 +9,7 @@ import java.util.List;
 
 public class HtmlPagesConverter {
 
+    public static final String PAGE_BREAK = "PAGE_BREAK";
     private String filename;
     private List<Integer> breaks = new ArrayList<Integer>();
 
@@ -23,12 +24,12 @@ public class HtmlPagesConverter {
     }
 
     public String getHtmlPage(int page) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(this.filename));
+        BufferedReader reader = getBufferedReader();
         reader.skip(breaks.get(page));
         StringBuffer htmlPage = new StringBuffer();
         String line = reader.readLine();
         while (line != null) {
-            if (line.contains("PAGE_BREAK")) {
+            if (line.contains(PAGE_BREAK)) {
                 break;
             }
             htmlPage.append(StringEscapeUtils.escapeHtml(line));
@@ -38,6 +39,10 @@ public class HtmlPagesConverter {
         }
         reader.close();
         return htmlPage.toString();
+    }
+
+    protected BufferedReader getBufferedReader() throws FileNotFoundException {
+        return new BufferedReader(new FileReader(this.filename));
     }
 
     private void createPageBreaks(BufferedReader reader) throws IOException {
