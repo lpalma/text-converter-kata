@@ -3,27 +3,22 @@ package com.codurance.textConverterKata;
 import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.given;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.StringReader;
 
-@RunWith(MockitoJUnitRunner.class)
 public class HtmlTextConverterShould {
     public static final String EMPTY = "";
     public static final String FILE_NAME = "some_file_name";
     public static final String HTML_NEW_LINE = "<br />";
     public static final String ESCAPED_HTML = "&amp;&lt;&gt;&quot;&quot;" + HTML_NEW_LINE;
     public static final String LINE = "line";
-    public static final String EOF = null;
     public static final String CHARACTERS_TO_ESCAPE = "&<>\"'";
-    @Mock
+
     private BufferedReader bufferedReader;
     private HtmlTextConverter htmlTextConverter;
 
@@ -34,6 +29,8 @@ public class HtmlTextConverterShould {
 
     @Test
     public void return_empty_string_when_given_empty_file() throws Exception {
+        bufferedReader = this.bufferedReader("");
+
         String convertedHtml = htmlTextConverter.convertToHtml();
 
         assertThat(convertedHtml, is(EMPTY));
@@ -41,7 +38,7 @@ public class HtmlTextConverterShould {
 
     @Test
     public void convert_end_of_lines_to_html_format() throws Exception {
-        given(bufferedReader.readLine()).willReturn(LINE, EOF);
+        bufferedReader = this.bufferedReader(LINE);
 
         String convertedHtml = htmlTextConverter.convertToHtml();
 
@@ -50,11 +47,17 @@ public class HtmlTextConverterShould {
 
     @Test
     public void escape_characters_to_html() throws Exception {
-        given(bufferedReader.readLine()).willReturn(CHARACTERS_TO_ESCAPE, EOF);
+        bufferedReader = this.bufferedReader(CHARACTERS_TO_ESCAPE);
 
         String convertedHtml = htmlTextConverter.convertToHtml();
 
         assertThat(convertedHtml, endsWith(ESCAPED_HTML));
+    }
+
+    private BufferedReader bufferedReader(String fileContent) {
+        StringReader stringReader = new StringReader(fileContent);
+
+        return new BufferedReader(stringReader);
     }
 
     class HtmlTextConverterStub extends HtmlTextConverter {
