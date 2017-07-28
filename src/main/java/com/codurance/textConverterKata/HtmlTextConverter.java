@@ -19,11 +19,16 @@ public class HtmlTextConverter
     }
 
     public String convertToHtml() throws IOException{
+		BufferedReader bufferedReader = getBufferedReader();
 
-    	return getBufferedReader()
+		String html = bufferedReader
 				.lines()
 				.map(toHtml())
 				.collect(Collectors.joining(""));
+
+		bufferedReader.close();
+
+		return html;
     }
 
 	public String getFilename() {
